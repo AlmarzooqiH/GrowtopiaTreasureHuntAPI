@@ -3,7 +3,17 @@ const cors = require("cors");
 
 const app = express();
 
-app.use(cors());
+const corsOptions = {
+  origin: [
+    "https://donatev2s.com",
+    "https://www.donatev2s.com"
+  ],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"]
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 app.use(express.json());
 
 app.post("/check", (req, res) => {
