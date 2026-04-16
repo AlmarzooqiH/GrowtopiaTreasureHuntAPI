@@ -3,34 +3,31 @@ const cors = require("cors");
 
 const app = express();
 
-// log requests (optional but useful)
-app.use((req, res, next) => {
-  console.log(req.method, req.url);
-  next();
-});
+const corsOptions = {
+  origin: function (origin, callback) {
+    const allowed = [
+      "https://donatev2s.com",
+      "https://www.donatev2s.com"
+    ];
 
-// CORS
-app.use(cors({
-  origin: "*",
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"]
-}));
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+};
 
-// ✅ FIXED LINE
-app.options("/*", cors());
-
+app.use(cors(corsOptions));
 app.use(express.json());
-
 console.log("Setup completed");
 
 app.post("/check", (req, res) => {
   console.log("In check endpoint :P");
-
   try {
     const { answer } = req.body;
 
     console.log(answer);
-
     if (!process.env.ANSWER) {
       return res.status(500).json({ error: "Missing ANSWER" });
     }
@@ -44,12 +41,10 @@ app.post("/check", (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  res.send("API alive");
-});
-
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 app.listen(PORT, "0.0.0.0", () => {
-  console.log("Server running on", PORT);
+  console.log("PORT PORT PORT PORTT: ", PORT);
+  console.log("process.env.PORT: ", process.env.PORT);
+  // console.log("Server running on", PORT);
 });
