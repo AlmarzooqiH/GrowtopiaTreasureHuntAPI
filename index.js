@@ -21,11 +21,13 @@ app.get("/test", (req, res) => {
 });
 
 // Main endpoint
+const ANSWER = process.env.ANSWER;
+
 app.post("/check", (req, res) => {
   const { answer } = req.body;
 
   return res.json({
-    correct: answer === process.env.ANSWER
+    correct: answer === ANSWER
   });
 });
 
@@ -34,4 +36,5 @@ const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on", PORT);
+  console.log("ANSWER: ", ANSWER);
 });
