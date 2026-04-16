@@ -3,21 +3,21 @@ const cors = require("cors");
 
 const app = express();
 
-// 🔥 Log all requests (so you can see OPTIONS)
+// log requests (optional but useful)
 app.use((req, res, next) => {
   console.log(req.method, req.url);
   next();
 });
 
-// ✅ Proper CORS setup
+// CORS
 app.use(cors({
   origin: "*",
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 }));
 
-// ✅ THIS is what you were missing
-app.options("*", cors());
+// ✅ FIXED LINE
+app.options("/*", cors());
 
 app.use(express.json());
 
@@ -29,7 +29,7 @@ app.post("/check", (req, res) => {
   try {
     const { answer } = req.body;
 
-    console.log("Answer received:", answer);
+    console.log(answer);
 
     if (!process.env.ANSWER) {
       return res.status(500).json({ error: "Missing ANSWER" });
@@ -44,9 +44,8 @@ app.post("/check", (req, res) => {
   }
 });
 
-// optional test route
 app.get("/", (req, res) => {
-  res.send("API is alive");
+  res.send("API alive");
 });
 
 const PORT = process.env.PORT || 3000;
