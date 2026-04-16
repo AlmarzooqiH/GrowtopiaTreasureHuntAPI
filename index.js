@@ -3,31 +3,17 @@ const cors = require("cors");
 
 const app = express();
 
-// CORS (simple = least problems)
 app.use(cors());
 
-// JSON parser
 app.use(express.json());
 
-// Logger (optional but useful)
-app.use((req, res, next) => {
-  console.log(req.method, req.url);
-  next();
-});
-
-// Health check
-app.get("/test", (req, res) => {
-  res.json({ ok: true });
-});
-
-// Main endpoint
 const ANSWER = process.env.ANSWER;
 
 app.post("/check", (req, res) => {
   const { answer } = req.body;
   
   if (ANSWER === undefined){
-    return res.status(500).json({
+    return res.status(501).json({
       error: "Server alive but missing ANSWER env variable"
     });
   }
@@ -36,8 +22,7 @@ app.post("/check", (req, res) => {
   });
 });
 
-// Safe port
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6769;
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on", PORT);
