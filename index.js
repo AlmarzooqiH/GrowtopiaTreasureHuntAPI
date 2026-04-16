@@ -4,16 +4,23 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: [
-    "https://donatev2s.com",
-    "https://www.donatev2s.com"
-  ],
+  origin: function (origin, callback) {
+    if (!origin) return callback(null, true);
+
+    const allowed = [
+      "https://donatev2s.com",
+      "https://www.donatev2s.com"
+    ];
+
+    if (allowed.includes(origin)) return callback(null, true);
+
+    return callback(new Error("Not allowed by CORS"));
+  },
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"]
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(express.json());
 
 app.post("/check", (req, res) => {
@@ -27,7 +34,6 @@ app.post("/check", (req, res) => {
     return res.json({
       correct: answer === process.env.ANSWER
     });
-
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Server crash" });
