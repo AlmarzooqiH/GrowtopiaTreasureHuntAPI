@@ -25,7 +25,12 @@ const ANSWER = process.env.ANSWER;
 
 app.post("/check", (req, res) => {
   const { answer } = req.body;
-
+  
+  if (ANSWER === undefined){
+    return res.status(500).json({
+      error: "Server alive but missing ANSWER env variable"
+    });
+  }
   return res.json({
     correct: answer === ANSWER
   });
