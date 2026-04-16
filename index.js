@@ -1,22 +1,33 @@
 const express = require("express");
 const cors = require("cors");
-const ANSWER = process.env.ANSWER;
-const PORT = process.env.PORT;
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
 app.post("/check", (req, res) => {
-  const { answer } = req.body;
+  try {
+    const { answer } = req.body;
 
-  if (answer === ANSWER) {
-    return res.json({ correct: true });
+    if (!process.env.ANSWER) {
+      return res.status(500).json({ error: "Missing ANSWER env" });
+    }
+
+    if (answer === process.env.ANSWER) {
+      return res.json({ correct: true });
+    }
+
+    return res.json({ correct: false });
+
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: "Server crash" });
   }
-
-  res.json({ correct: false });
 });
 
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
-  console.log("API running on port 6769");
+  console.log(`API running on port ${PORT}`);
 });
