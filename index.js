@@ -2,7 +2,10 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
-
+app.use((req, res, next) => {
+  console.log("➡️ REQUEST:", req.method, req.url);
+  next();
+});
 /**
  * ✅ SIMPLE CORS (this is what you actually want on Railway)
  * - handles OPTIONS automatically
