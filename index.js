@@ -27,7 +27,7 @@ app.post("/check", (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-
+console.log("LISTENING ON", PORT);
 app.listen(PORT, () => {
   console.log(`API running on port ${PORT}`);
 });
