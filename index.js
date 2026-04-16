@@ -13,7 +13,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(express.json());
 
 app.post("/check", (req, res) => {
@@ -24,11 +23,9 @@ app.post("/check", (req, res) => {
       return res.status(500).json({ error: "Missing ANSWER env" });
     }
 
-    if (answer === process.env.ANSWER) {
-      return res.json({ correct: true });
-    }
-
-    return res.json({ correct: false });
+    return res.json({
+      correct: answer === process.env.ANSWER
+    });
 
   } catch (err) {
     console.log(err);
