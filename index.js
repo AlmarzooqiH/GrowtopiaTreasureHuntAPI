@@ -4,16 +4,21 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: [
-    "https://donatev2s.com",
-    "https://www.donatev2s.com"
-  ],
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type"]
+  origin: function (origin, callback) {
+    const allowed = [
+      "https://donatev2s.com",
+      "https://www.donatev2s.com"
+    ];
+
+    if (!origin || allowed.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
 };
 
-app.use(cors(corsOptions));
-app.use(express.json());
+app.use(cors(corsOptions));app.use(express.json());
 
 app.get("/", (req, res) => {
   res.json({ status: "ok" });
