@@ -3,22 +3,22 @@ const cors = require("cors");
 
 const app = express();
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    const allowed = [
-      "https://donatev2s.com",
-      "https://www.donatev2s.com"
-    ];
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     const allowed = [
+//       "https://donatev2s.com",
+//       "https://www.donatev2s.com"
+//     ];
 
-    if (!origin || allowed.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  }
-};
+//     if (!origin || allowed.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   }
+// };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(cors());
 app.use(express.json());
 console.log("Setup completed");
